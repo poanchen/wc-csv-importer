@@ -52,6 +52,35 @@ class wc_csv_importer_Admin {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
+		// Add menus
+		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+
+	}
+
+	/**
+	 * Add menu items.
+	 * For more information, please go to https://developer.wordpress.org/reference/functions/add_submenu_page/
+	 */
+	public function admin_menu() {
+
+		global $menu;
+
+		if ( ! is_admin() || ! current_user_can( 'manage_woocommerce' ) ) {
+			return;
+		}
+
+		add_menu_page( $this->plugin_name, $this->plugin_name, 'manage_woocommerce', 'wc_csv_importer_upload', array($this, 'upload'), 'dashicons-randomize', '56' );
+
+		add_submenu_page( 'wc_csv_importer_upload', 'Setting', 'Setting', 'manage_woocommerce', 'wc_csv_importer_setting', array($this, 'setting') );
+
+	}
+
+	public function upload () {
+		include dirname( __FILE__ ) . '/partials/wc-csv-importer-admin-upload.php';
+	}
+
+	public function setting () {
+		include dirname( __FILE__ ) . '/partials/wc-csv-importer-admin-setting.php';
 	}
 
 	/**

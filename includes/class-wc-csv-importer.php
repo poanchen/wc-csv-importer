@@ -68,7 +68,7 @@ class wc_csv_importer {
 	 */
 	public function __construct() {
 
-		$this->plugin_name = 'wc-csv-importer';
+		$this->plugin_name = 'WooCommerce CSV Importer';
 		$this->version = '1.0.0';
 
 		$this->load_dependencies();
