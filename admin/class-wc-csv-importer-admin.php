@@ -76,7 +76,7 @@ class wc_csv_importer_Admin {
 	}
 
 	public function upload () {
-		
+
 		// check if there were any problem with the uploaded file
 		if ( isset ( $_FILES['fileToUpload'] ) && $_FILES['fileToUpload']['error'] != 0 ) {
 			$e = new UploadErrorMessages();
@@ -92,15 +92,23 @@ class wc_csv_importer_Admin {
 			return;
 		}
 
-		// check if the user just uploaded their CSV file
 		if ( isset ( $_FILES['fileToUpload'] ) && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST["submit"] ) ) {
-			$file = $_FILES['fileToUpload']['tmp_name'];
+			// user just uploaded their CSV file
+			$_SESSION["file"] = $_FILES['fileToUpload']['tmp_name'];
 			include dirname( __FILE__ ) . '/partials/wc-csv-importer-admin-upload-preview.php';
-			return;
+		} else if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST["create"] ) ) {
+			// user just clicked the create button
+			$wc_helper = new wc_helper();
+			for ($i = 0; $i < count($_SESSION["listOfProducts"]); $i++) {
+				var_dump($wc_helper->add_new_product($_SESSION["listOfProducts"][$i]));
+				// echo '<pre>';
+				// var_dump(get_post_custom(147));
+				// echo '</pre>';
+			}
+		} else {
+			// simply show the import file
+			include dirname( __FILE__ ) . '/partials/wc-csv-importer-admin-upload.php';
 		}
-
-		// else, simply show the import file
-		include dirname( __FILE__ ) . '/partials/wc-csv-importer-admin-upload.php';
 
 	}
 

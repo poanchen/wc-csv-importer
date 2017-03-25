@@ -12,8 +12,8 @@
  * @subpackage wc-csv-importer/admin/partials
  */
 
-$listOfProductsInArray = array();
-$fileData = fopen( $file, 'r' );
+$listOfProducts = array();
+$fileData = fopen( $_SESSION["file"], 'r' );
 $i = 0;
 $lineNumberForHeader = 1;
 $colName;
@@ -31,24 +31,32 @@ for ( $i = 0; !feof( $fileData ); $i++ ) {
 	}
 
 	$new_product_post = array(
-		'ID'    => $eachProduct[1],
+		'_sku'    => $eachProduct[1],
 		'post_title'    => $eachProduct[2],
-		'post_content'    => $eachProduct[3],
-		'post_texture'    => $eachProduct[4],
-		'regular_price'    => $eachProduct[5],
+		'product_size'    => $eachProduct[3],
+		'product_texture'    => $eachProduct[4],
+		'product_regular_price'    => $eachProduct[5],
 		'post_excerpt'  => '',
 		'post_type'     => 'product',
 		'post_status'   => 'publish'
 	);
 
-	array_push( $listOfProductsInArray, $new_product_post );
+	array_push( $listOfProducts, $new_product_post );
 }
 
 fclose( $fileData );
 
+$_SESSION["listOfProducts"] = $listOfProducts;
+
 ?>
 
 <div class="wrap">
+	<form method="post">
+		<input type="submit" value="Create" name="create">
+	</form>
+</div>
+
+<div class="wrap import">
 	<table>
 		<tr>
 			<?php
@@ -61,14 +69,14 @@ fclose( $fileData );
 		</tr>
 		<tr>
 			<?php
-				for ($i = 0; $i < count($listOfProductsInArray); $i++) {
+				for ($i = 0; $i < count($listOfProducts); $i++) {
 			?>
 					<th>N/A</th>
-					<th><?php echo $listOfProductsInArray[$i]['ID']; ?></th>
-					<th><?php echo $listOfProductsInArray[$i]['post_title']; ?></th>
-					<th><?php echo $listOfProductsInArray[$i]['post_content']; ?></th>
-					<th><?php echo $listOfProductsInArray[$i]['post_texture']; ?></th>
-					<th><?php echo $listOfProductsInArray[$i]['regular_price']; ?></th>
+					<th><?php echo $listOfProducts[$i]['_sku']; ?></th>
+					<th><?php echo $listOfProducts[$i]['post_title']; ?></th>
+					<th><?php echo $listOfProducts[$i]['product_size']; ?></th>
+					<th><?php echo $listOfProducts[$i]['product_texture']; ?></th>
+					<th><?php echo $listOfProducts[$i]['product_regular_price']; ?></th>
 		</tr>
 			<?php
 				}

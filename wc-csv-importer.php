@@ -77,6 +77,11 @@ run_wc_csv_importer();
 /**
  * Include the error message library so that we can give user better error message instead of error code
  */
-require plugin_dir_path( __FILE__ ) . 'src/UploadErrorMessages.php';
+require plugin_dir_path( __FILE__ ) . 'src/upload-error-message.php';
 
-$file;
+/**
+ * Include the WooCommerce helper functions library so that we can use the WooCommerce API to create WooCommerce products
+ */
+require plugin_dir_path( __FILE__ ) . 'src/wc-helper.php';
+
+session_start();
