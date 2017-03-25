@@ -85,11 +85,11 @@ class wc_csv_importer_Admin {
 			echo '<div class="wrap">';
 			echo '	<div class="error">';
 			echo '		<p>';
-            echo 			$error_message . '.';
+			echo 			$error_message . '.';
 			echo '		</p>';
-            echo '	</div>';
-            echo '</div>';
-            return;
+			echo '	</div>';
+			echo '</div>';
+			return;
 		}
 
 		// check if the user just uploaded their CSV file
