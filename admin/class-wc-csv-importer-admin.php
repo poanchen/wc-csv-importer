@@ -76,11 +76,38 @@ class wc_csv_importer_Admin {
 	}
 
 	public function upload () {
+		
+		// check if there were any problem with the uploaded file
+		if ( isset ( $_FILES['fileToUpload'] ) && $_FILES['fileToUpload']['error'] != 0 ) {
+			$e = new UploadErrorMessages();
+			$error_message = $e->convertErrorToMessage( $_FILES['fileToUpload']['error'] );
+
+			echo '<div class="wrap">';
+			echo '	<div class="error">';
+			echo '		<p>';
+            echo 			$error_message . '.';
+			echo '		</p>';
+            echo '	</div>';
+            echo '</div>';
+            return;
+		}
+
+		// check if the user just uploaded their CSV file
+		if ( isset ( $_FILES['fileToUpload'] ) && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST["submit"] ) ) {
+			$file = $_FILES['fileToUpload']['tmp_name'];
+			include dirname( __FILE__ ) . '/partials/wc-csv-importer-admin-upload-preview.php';
+			return;
+		}
+
+		// else, simply show the import file
 		include dirname( __FILE__ ) . '/partials/wc-csv-importer-admin-upload.php';
+
 	}
 
 	public function setting () {
+
 		include dirname( __FILE__ ) . '/partials/wc-csv-importer-admin-setting.php';
+
 	}
 
 	/**

@@ -73,3 +73,10 @@ function run_wc_csv_importer() {
 
 }
 run_wc_csv_importer();
+
+/**
+ * Include the error message library so that we can give user better error message instead of error code
+ */
+require plugin_dir_path( __FILE__ ) . 'src/UploadErrorMessages.php';
+
+$file;
