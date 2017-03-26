@@ -31,14 +31,15 @@ for ( $i = 0; !feof( $fileData ); $i++ ) {
 	}
 
 	$new_product_post = array(
-		'_sku'    => $eachProduct[1],
-		'post_title'    => $eachProduct[2],
-		'product_size'    => $eachProduct[3],
-		'product_texture'    => $eachProduct[4],
+		'thumb_url'                => $eachProduct[0],
+		'_sku'                     => $eachProduct[1],
+		'post_title'               => $eachProduct[2],
+		'product_size'             => $eachProduct[3],
+		'product_texture'          => $eachProduct[4],
 		'product_regular_price'    => $eachProduct[5],
-		'post_excerpt'  => '',
-		'post_type'     => 'product',
-		'post_status'   => 'publish'
+		'post_excerpt'             => '',
+		'post_type'                => 'product',
+		'post_status'              => 'publish'
 	);
 
 	array_push( $listOfProducts, $new_product_post );
@@ -71,7 +72,7 @@ $_SESSION["listOfProducts"] = $listOfProducts;
 			<?php
 				for ($i = 0; $i < count($listOfProducts); $i++) {
 			?>
-					<th>N/A</th>
+					<th><?php echo $listOfProducts[$i]['thumb_url']; ?></th>
 					<th><?php echo $listOfProducts[$i]['_sku']; ?></th>
 					<th><?php echo $listOfProducts[$i]['post_title']; ?></th>
 					<th><?php echo $listOfProducts[$i]['product_size']; ?></th>

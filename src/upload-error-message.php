@@ -14,14 +14,14 @@
 class UploadErrorMessages {
 
 	/**
-     *
-     * Convert an upload error number to a message
-     *
-     * @param $code
-     * @return string
-     *
-     */
-    public function convertErrorToMessage($code) {
+	 *
+	 * Convert an upload error number to a message
+	 *
+	 * @param $code
+	 * @return string
+	 *
+	 */
+	public function convertErrorToMessage($code) {
 
 		switch ($code) {
 			case UPLOAD_ERR_INI_SIZE:

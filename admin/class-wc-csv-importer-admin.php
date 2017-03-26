@@ -48,13 +48,11 @@ class wc_csv_importer_Admin {
 	 * @param      string    $version    The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
-
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
 		// Add menus
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
-
 	}
 
 	/**
@@ -62,7 +60,6 @@ class wc_csv_importer_Admin {
 	 * For more information, please go to https://developer.wordpress.org/reference/functions/add_submenu_page/
 	 */
 	public function admin_menu() {
-
 		global $menu;
 
 		if ( ! is_admin() || ! current_user_can( 'manage_woocommerce' ) ) {
@@ -72,11 +69,9 @@ class wc_csv_importer_Admin {
 		add_menu_page( $this->plugin_name, $this->plugin_name, 'manage_woocommerce', 'wc_csv_importer_upload', array($this, 'upload'), 'dashicons-randomize', '56' );
 
 		add_submenu_page( 'wc_csv_importer_upload', 'Setting', 'Setting', 'manage_woocommerce', 'wc_csv_importer_setting', array($this, 'setting') );
-
 	}
 
 	public function upload () {
-
 		// check if there were any problem with the uploaded file
 		if ( isset ( $_FILES['fileToUpload'] ) && $_FILES['fileToUpload']['error'] != 0 ) {
 			$e = new UploadErrorMessages();
@@ -102,20 +97,17 @@ class wc_csv_importer_Admin {
 			for ($i = 0; $i < count($_SESSION["listOfProducts"]); $i++) {
 				var_dump($wc_helper->add_new_product($_SESSION["listOfProducts"][$i]));
 				// echo '<pre>';
-				// var_dump(get_post_custom(147));
+				// var_dump(get_post_custom(250));
 				// echo '</pre>';
 			}
 		} else {
 			// simply show the import file
 			include dirname( __FILE__ ) . '/partials/wc-csv-importer-admin-upload.php';
 		}
-
 	}
 
 	public function setting () {
-
 		include dirname( __FILE__ ) . '/partials/wc-csv-importer-admin-setting.php';
-
 	}
 
 	/**
@@ -124,7 +116,6 @@ class wc_csv_importer_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_styles() {
-
 		/**
 		 * This function is provided for demonstration purposes only.
 		 *
@@ -138,7 +129,6 @@ class wc_csv_importer_Admin {
 		 */
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/wc-csv-importer-admin.css', array(), $this->version, 'all' );
-
 	}
 
 	/**
@@ -147,7 +137,6 @@ class wc_csv_importer_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-
 		/**
 		 * This function is provided for demonstration purposes only.
 		 *
@@ -161,7 +150,5 @@ class wc_csv_importer_Admin {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wc-csv-importer-admin.js', array( 'jquery' ), $this->version, false );
-
 	}
-
 }

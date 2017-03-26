@@ -67,10 +67,8 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-wc-csv-importer.php';
  * @since    1.0.0
  */
 function run_wc_csv_importer() {
-
 	$plugin = new wc_csv_importer();
 	$plugin->run();
-
 }
 run_wc_csv_importer();
 
