@@ -66,16 +66,16 @@ class wc_csv_importer_Admin {
 			return;
 		}
 
-		add_menu_page( $this->plugin_name, $this->plugin_name, 'manage_woocommerce', 'wc_csv_importer_upload', array($this, 'upload'), 'dashicons-randomize', '56' );
+		add_menu_page( $this->plugin_name, $this->plugin_name, 'manage_woocommerce', 'wc_csv_importer_load', array($this, 'load'), 'dashicons-randomize', '56' );
 
-		add_submenu_page( 'wc_csv_importer_upload', 'Setting', 'Setting', 'manage_woocommerce', 'wc_csv_importer_setting', array($this, 'setting') );
+		add_submenu_page( 'wc_csv_importer_load', 'Setting', 'Setting', 'manage_woocommerce', 'wc_csv_importer_setting', array($this, 'setting') );
 	}
 
-	public function upload () {
-		// check if there were any problem with the uploaded file
-		if ( isset ( $_FILES['fileToUpload'] ) && $_FILES['fileToUpload']['error'] != 0 ) {
+	public function load() {
+		// check if there were any problem with the loaded file
+		if ( isset ( $_FILES['fileToLoad'] ) && $_FILES['fileToLoad']['error'] != 0 ) {
 			$e = new UploadErrorMessages();
-			$error_message = $e->convertErrorToMessage( $_FILES['fileToUpload']['error'] );
+			$error_message = $e->convertErrorToMessage( $_FILES['fileToLoad']['error'] );
 
 			echo '<div class="wrap">';
 			echo '	<div class="error">';
@@ -87,26 +87,23 @@ class wc_csv_importer_Admin {
 			return;
 		}
 
-		if ( isset ( $_FILES['fileToUpload'] ) && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST["submit"] ) ) {
-			// user just uploaded their CSV file
-			$_SESSION["file"] = $_FILES['fileToUpload']['tmp_name'];
-			include dirname( __FILE__ ) . '/partials/wc-csv-importer-admin-upload-preview.php';
+		if ( isset ( $_FILES['fileToLoad'] ) && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST["submit"] ) ) {
+			// user just loaded their CSV file
+			$_SESSION["file"] = $_FILES['fileToLoad']['tmp_name'];
+			include dirname( __FILE__ ) . '/partials/wc-csv-importer-admin-load-preview.php';
 		} else if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST["create"] ) ) {
 			// user just clicked the create button
 			$wc_helper = new wc_helper();
 			for ($i = 0; $i < count($_SESSION["listOfProducts"]); $i++) {
 				var_dump($wc_helper->add_new_product($_SESSION["listOfProducts"][$i]));
-				// echo '<pre>';
-				// var_dump(get_post_custom(250));
-				// echo '</pre>';
 			}
 		} else {
 			// simply show the import file
-			include dirname( __FILE__ ) . '/partials/wc-csv-importer-admin-upload.php';
+			include dirname( __FILE__ ) . '/partials/wc-csv-importer-admin-load.php';
 		}
 	}
 
-	public function setting () {
+	public function setting() {
 		include dirname( __FILE__ ) . '/partials/wc-csv-importer-admin-setting.php';
 	}
 

@@ -51,7 +51,6 @@ class UploadErrorMessages {
 		}
 		
 		return $message;
-		
 	}
 }
 
