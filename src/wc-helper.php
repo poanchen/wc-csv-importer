@@ -38,8 +38,11 @@ class wc_helper {
 		if ( 0 != ( $new_product_id = wp_insert_post( $new_product_post ) ) ) {
 			update_post_meta( $new_product_id, '_product_attributes', $product_attributes);
 			update_post_meta( $new_product_id, '_sku', $new_product_post['_sku']);
-			update_post_meta( $new_product_id, '_price', $this->calculate_regular_price( $product_attributes ));
-			update_post_meta( $new_product_id, '_regular_price', $this->calculate_regular_price( $product_attributes ));
+
+			$regular_price = $this->calculate_regular_price( $product_attributes );
+
+			update_post_meta( $new_product_id, '_price', $regular_price );
+			update_post_meta( $new_product_id, '_regular_price', $regular_price );
 			update_post_meta( $new_product_id, '_visibility', 'visible' );
 			update_post_meta( $new_product_id, '_stock_status', 'instock' );
 
