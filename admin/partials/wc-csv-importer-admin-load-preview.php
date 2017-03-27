@@ -51,12 +51,12 @@ $_SESSION["listOfProducts"] = $listOfProducts;
 	<table>
 		<tr>
 			<?php
-				for ( $i = 0; $i < count($c->cols_default); $i++ ) {
+				for ( $i = 0; $i < count( $c->cols_default ); $i++ ) {
 			?>
 					<th>
 						<select id="<?php echo 'wc_field_' . $i; ?>">
 			<?php
-							for ( $j = 0; $j < count($c->cols_default); $j++ ) {
+							for ( $j = 0; $j < count( $c->cols_default ); $j++ ) {
 								$value = $c->cols_default[$j]['name'];
 								$selected = $i == $j ? 'selected' : '';
 			?>
@@ -72,11 +72,11 @@ $_SESSION["listOfProducts"] = $listOfProducts;
 		</tr>
 
 		<?php
-			for ( $i = 0; $i < count($listOfProducts); $i++ ) {
+			for ( $i = 0; $i < count( $listOfProducts ); $i++ ) {
 		?>
 				<tr>
 				<?php
-					for ( $j = 0; $j < count($c->cols_default); $j++ ) {
+					for ( $j = 0; $j < count( $c->cols_default ); $j++ ) {
 						$wc_field_name = $c->cols_default[$j]['wc_field_name'];
 				?>
 						<th><?php echo $listOfProducts[$i][$wc_field_name]; ?></th>
@@ -90,28 +90,26 @@ $_SESSION["listOfProducts"] = $listOfProducts;
 	<table>
 </div>
 
-<script>
+<script type="text/javascript">
 	// thanks to https://www.w3schools.com/js/js_cookies.asp
 	function setCookie(cname, cvalue, exdays) {
 		var d = new Date();
-		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		d.setTime( d.getTime() + ( exdays*24*60*60*1000 ) );
 		var expires = "expires="+ d.toUTCString();
 		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 	}
 
 	function wcFieldHasBeenClick(event) {
 		var e = event.target;
-		setCookie( e.id, getOptionNameByIndex(e.selectedIndex) );
+		setCookie( e.id, getOptionNameByIndex( e.selectedIndex ) );
 	}
 
 	function getOptionNameByIndex(index) {
 		return document.getElementsByTagName("option")[index].value;
 	}
 
-	for ( var i = 0; i < 6; i++ ) {
-		var x = document.getElementById( "wc_field_" + i ).selectedIndex;
-
-		setCookie( "wc_field_" + i, getOptionNameByIndex(x) );
+	for ( var i = 0; i < <?php echo count( $c->cols_default ); ?>; i++ ) {
+		setCookie( "wc_field_" + i, getOptionNameByIndex( document.getElementById( "wc_field_" + i ).selectedIndex) );
 		document.getElementById( "wc_field_" + i ).addEventListener( "click", wcFieldHasBeenClick );
 	}
 </script>

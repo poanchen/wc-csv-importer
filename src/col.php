@@ -54,18 +54,6 @@ class col {
 
 		$this->line_number_for_cols = 2;
 	}
-
-	/**
-	 *
-	 * WooCommerce add new products helper function
-	 *
-	 * @param $new_product_post
-	 * @return array product ID
-	 *
-	*/
-	public function add_new_product( $new_product_post ) {
-		return $new_product_id;
-	}
 }
 
 ?>

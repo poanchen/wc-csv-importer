@@ -96,8 +96,8 @@ class wc_csv_importer_Admin {
 			$wc_helper = new wc_helper();
 			$creat_status = true;
 
-			for ( $i = 0; $i < count($_SESSION["listOfProducts"]); $i++ ) {
-				if ( !$wc_helper->add_new_product($_SESSION["listOfProducts"][$i]) ) {
+			for ( $i = 0; $i < count( $_SESSION["listOfProducts"] ); $i++ ) {
+				if ( !$wc_helper->add_new_product( $_SESSION["listOfProducts"][$i] ) ) {
 					$creat_status = false;
 				}
 			}
