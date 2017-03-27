@@ -82,4 +82,9 @@ require plugin_dir_path( __FILE__ ) . 'src/upload-error-message.php';
  */
 require plugin_dir_path( __FILE__ ) . 'src/wc-helper.php';
 
+/**
+ * Include all the default cols so that we can use them for the preview
+ */
+require plugin_dir_path( __FILE__ ) . 'src/col.php';
+
 session_start();

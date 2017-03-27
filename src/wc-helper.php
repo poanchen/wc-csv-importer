@@ -50,6 +50,18 @@ class wc_helper {
 			set_post_thumbnail( $new_product_id, $thumb_id );
 		}
 
+		// $c = new col();
+
+		// for ( $i = 0; $i < count($c->cols_default); $i++ ) {
+		// 	if ( $c->cols_default[$i]['name'] != $_COOKIE[ 'wc_field_' . $i ] ) {
+		// 		$old_value = $new_product_post[$c->wc_field_name[$c->cols_default[$i]['name']]];
+		// 		$new_value = $new_product_post[$c->wc_field_name[$_COOKIE[ 'wc_field_' . $i ]]];
+
+		// 		var_dump($old_value);
+		// 		var_dump($new_value);
+		// 	}
+		// }
+
 		return $new_product_id;
 	}
 
