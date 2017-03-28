@@ -30,6 +30,20 @@ class wc_helper {
 	 *
 	*/
 	public function add_new_product( $new_product_post ) {
+		$c = new col();
+		$unvisited_field = array();
+
+		// make sure all the columns are swap based on what user wants in the preview
+		for ( $i = 0; $i < count($c->cols_default); $i++ ) {
+			if ( $c->cols_default[$i]['name'] != $_COOKIE[ 'wc_field_' . $i ] && ! in_array( $c->cols_default[$i]['name'], $unvisited_field ) && ! in_array( $_COOKIE[ 'wc_field_' . $i ], $unvisited_field ) ) {
+				$old_value = $new_product_post[$c->wc_field_name[$c->cols_default[$i]['name']]];
+				$new_value = $new_product_post[$c->wc_field_name[$_COOKIE[ 'wc_field_' . $i ]]];
+				$new_product_post[$c->wc_field_name[$c->cols_default[$i]['name']]] = $new_value;
+				$new_product_post[$c->wc_field_name[$_COOKIE[ 'wc_field_' . $i ]]] = $old_value;
+				array_push( $unvisited_field, $c->cols_default[$i]['name'], $_COOKIE[ 'wc_field_' . $i ] );
+			}
+		}
+		
 		$product_attributes = $this->process_product_attribute( $new_product_post );
 
 		$thumb_url = $new_product_post['thumb_url'];
@@ -49,18 +63,6 @@ class wc_helper {
 			$thumb_id = $this->get_thumbnail_id( $thumb_url, $new_product_id, $new_product_post['post_title'] );
 			set_post_thumbnail( $new_product_id, $thumb_id );
 		}
-
-		// $c = new col();
-
-		// for ( $i = 0; $i < count($c->cols_default); $i++ ) {
-		// 	if ( $c->cols_default[$i]['name'] != $_COOKIE[ 'wc_field_' . $i ] ) {
-		// 		$old_value = $new_product_post[$c->wc_field_name[$c->cols_default[$i]['name']]];
-		// 		$new_value = $new_product_post[$c->wc_field_name[$_COOKIE[ 'wc_field_' . $i ]]];
-
-		// 		var_dump($old_value);
-		// 		var_dump($new_value);
-		// 	}
-		// }
 
 		return $new_product_id;
 	}
