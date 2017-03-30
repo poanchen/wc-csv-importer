@@ -43,26 +43,33 @@ class wc_helper {
 				array_push( $unvisited_field, $c->cols_default[$i]['name'], $_COOKIE[ 'wc_field_' . $i ] );
 			}
 		}
-		
+
 		$product_attributes = $this->process_product_attribute( $new_product_post );
 
 		$thumb_url = $new_product_post['thumb_url'];
 		unset($new_product_post['thumb_url']);
 
-		if ( 0 != ( $new_product_id = wp_insert_post( $new_product_post ) ) ) {
-			update_post_meta( $new_product_id, '_product_attributes', $product_attributes);
-			update_post_meta( $new_product_id, '_sku', $new_product_post['_sku']);
-
-			$regular_price = $this->calculate_regular_price( $product_attributes );
-
-			update_post_meta( $new_product_id, '_price', $regular_price );
-			update_post_meta( $new_product_id, '_regular_price', $regular_price );
-			update_post_meta( $new_product_id, '_visibility', 'visible' );
-			update_post_meta( $new_product_id, '_stock_status', 'instock' );
-
-			$thumb_id = $this->get_thumbnail_id( $thumb_url, $new_product_id, $new_product_post['post_title'] );
-			set_post_thumbnail( $new_product_id, $thumb_id );
+		if ( null == ( $new_product_id = $this->get_product_id_by_sku( $new_product_post['_sku'] ) ) ) {
+			// it is a new product, let's do a create
+			$new_product_id = wp_insert_post( $new_product_post );
+		} else {
+			// product already existed, let's do an update
+			$new_product_post['ID'] = $new_product_id;
+			wp_update_post( $new_product_post );
 		}
+
+		update_post_meta( $new_product_id, '_product_attributes', $product_attributes);
+		update_post_meta( $new_product_id, '_sku', $new_product_post['_sku']);
+
+		$regular_price = $this->calculate_regular_price( $product_attributes );
+
+		update_post_meta( $new_product_id, '_price', $regular_price );
+		update_post_meta( $new_product_id, '_regular_price', $regular_price );
+		update_post_meta( $new_product_id, '_visibility', 'visible' );
+		update_post_meta( $new_product_id, '_stock_status', 'instock' );
+
+		$thumb_id = $this->get_thumbnail_id( $thumb_url, $new_product_id, $new_product_post['post_title'] );
+		set_post_thumbnail( $new_product_id, $thumb_id );
 
 		return $new_product_id;
 	}
@@ -97,6 +104,25 @@ class wc_helper {
 		}
 
 		return $thumb_id;
+	}
+
+	/**
+	 *
+	 * Retrieve the WooCommerce product ID by sku
+	 * Thanks to https://www.skyverge.com/blog/find-product-sku-woocommerce/
+	 *
+	 * @param $sku
+	 * @return int $product_id ID
+	 *
+	*/
+	public function get_product_id_by_sku($sku) {
+		global $wpdb;
+
+		$product_id = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key='_sku' AND meta_value='%s' LIMIT 1", $sku ) );
+
+		if ( $product_id ) return $product_id;
+
+		return null;
 	}
 
 	/**
@@ -151,6 +177,14 @@ class wc_helper {
 			);
 			unset($new_product_post['product_regular_price']);
 		}
+
+		// $c = new col();
+
+		// foreach ( array_keys( $new_product_post ) as $key ) {
+			// if ( !in_array( $key, array_keys( $c->wc_field_name ) ) ) {
+			// 	var_dump( $key );
+			// }
+		// }
 
 		return $product_attributes;
 	}
