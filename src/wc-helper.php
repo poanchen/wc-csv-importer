@@ -77,7 +77,7 @@ class wc_helper {
 	/**
 	 *
 	 * Retrieve the thumnnail from the internet and return the thumbnail ID
-	 * Thanks to http://jafty.com/blog/programatically-create-woocommerce-products-with-variations/
+	 * Thanks to https://codex.wordpress.org/Function_Reference/media_handle_sideload
 	 *
 	 * @param $thumb_url
 	 * @param $new_product_id
@@ -91,19 +91,38 @@ class wc_helper {
 		$file_array['name'] = basename($matches[0]);
 		$file_array['tmp_name'] = $tmp;
 
-		if ( is_wp_error( $tmp ) ) {
+		if ( null == ( $thumb_id = $this->file_exists( $file_array['name'] ) ) ) {
+			if ( is_wp_error( $tmp ) ) {
+				@unlink( $file_array['tmp_name'] );
+				$file_array['tmp_name'] = '';
+			}
+
+			$thumb_id = media_handle_sideload( $file_array, $new_product_id, $product_title );
+
+			if ( is_wp_error($thumb_id) ) {
+				@unlink($file_array['tmp_name']);
+				$file_array['tmp_name'] = '';
+			}
+		} else {
+			// make sure to delete the downloaded file in temp folder to save spaces
 			@unlink( $file_array['tmp_name'] );
-			$file_array['tmp_name'] = '';
-		}
-
-		$thumb_id = media_handle_sideload( $file_array, $new_product_id, $product_title );
-
-		if ( is_wp_error($thumb_id) ) {
-			@unlink($file_array['tmp_name']);
-			$file_array['tmp_name'] = '';
 		}
 
 		return $thumb_id;
+	}
+
+	/**
+	 *
+	 * Check if the file already exist in WordPress upload folders
+	 *
+	 * @param $filename
+	 * @return int $post_id if it already exist, null otherwise
+	 *
+	*/
+	function file_exists($filename) {
+		global $wpdb;
+
+		return intval( $wpdb->get_var( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_value LIKE '%/$filename'" ) );
 	}
 
 	/**
@@ -112,17 +131,13 @@ class wc_helper {
 	 * Thanks to https://www.skyverge.com/blog/find-product-sku-woocommerce/
 	 *
 	 * @param $sku
-	 * @return int $product_id ID
+	 * @return int $product_id if it found it, null otherwise
 	 *
 	*/
 	public function get_product_id_by_sku($sku) {
 		global $wpdb;
 
-		$product_id = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key='_sku' AND meta_value='%s' LIMIT 1", $sku ) );
-
-		if ( $product_id ) return $product_id;
-
-		return null;
+		return $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key='_sku' AND meta_value='%s' LIMIT 1", $sku ) );
 	}
 
 	/**

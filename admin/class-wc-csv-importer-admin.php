@@ -94,15 +94,15 @@ class wc_csv_importer_Admin {
 		} else if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST["create"] ) ) {
 			// user just clicked the create button
 			$wc_helper = new wc_helper();
-			$creat_status = true;
+			$create_status = true;
 
 			for ( $i = 0; $i < count( $_SESSION["listOfProducts"] ); $i++ ) {
 				if ( !$wc_helper->add_new_product( $_SESSION["listOfProducts"][$i] ) ) {
-					$creat_status = false;
+					$create_status = false;
 				}
 			}
 
-			if ( $creat_status ) {
+			if ( $create_status ) {
 				echo 'Success!';
 			} else {
 				echo 'Fail...';
