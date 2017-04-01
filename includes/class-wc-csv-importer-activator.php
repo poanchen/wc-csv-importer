@@ -23,14 +23,66 @@
 class wc_csv_importer_Activator {
 
 	/**
-	 * Short Description. (use period)
+	 * Create necessary tables in the database.
 	 *
-	 * Long Description.
+	 * Added necessary tables for lookup table for column header and settings.
 	 *
 	 * @since    1.0.0
 	 */
 	public static function activate() {
+		global $wpdb;
 
+		$look_up_table = $wpdb->prefix . 'wc_csv_importer_header_look_up';
+		$charset_collate = $wpdb->get_charset_collate();
+
+		$create_look_up_table_sql = "CREATE TABLE $look_up_table (
+			id mediumint(9) NOT NULL AUTO_INCREMENT,
+			name text NOT NULL,
+			value text NOT NULL,
+			PRIMARY KEY  (id)
+		) $charset_collate;";
+
+		$setting_table = $wpdb->prefix . 'wc_csv_importer_header_setting';
+
+		$create_setting_table_sql = "CREATE TABLE $setting_table (
+			id mediumint(9) NOT NULL AUTO_INCREMENT,
+			column_header_line_number mediumint(9) NOT NULL,
+			column_header_field_in_order text NOT NULL,
+			PRIMARY KEY  (id)
+		) $charset_collate;";
+
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+
+		dbDelta( $create_look_up_table_sql );
+		dbDelta( $create_setting_table_sql );
+
+		// insert some default data into the look up table
+		$wc_field_name = array(
+			'圖型'    => 'thumb_url',
+			'編號'    => '_sku',
+			'產品名稱' => 'post_title',
+			'尺寸'    => 'product_size',
+			'材質'    => 'product_texture',
+			'價格'    => 'product_regular_price'
+		);
+
+		foreach ( $wc_field_name as $key => $value ) {
+			$wpdb->insert(
+				$look_up_table,
+				array(
+					'name'  => $key,
+					'value' => $value
+				)
+			);
+		}
+
+		// insert some default data into the setting table
+		$wpdb->insert(
+			$setting_table,
+			array(
+				'column_header_line_number'  => 2,
+				'column_header_field_in_order' => '{"圖型","編號","產品名稱","尺寸","材質","價格"}'
+			)
+		);
 	}
-
 }

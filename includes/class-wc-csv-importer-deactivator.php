@@ -23,14 +23,22 @@
 class wc_csv_importer_Deactivator {
 
 	/**
-	 * Short Description. (use period)
+	 * Delete tables in the database.
 	 *
-	 * Long Description.
+	 * Delete look up and setting tables.
 	 *
 	 * @since    1.0.0
 	 */
 	public static function deactivate() {
+		global $wpdb;
 
+		$look_up_table = $wpdb->prefix . 'wc_csv_importer_header_look_up';
+		$setting_table = $wpdb->prefix . 'wc_csv_importer_header_setting';
+
+		$drop_look_up_table_sql = "DROP TABLE IF EXISTS $look_up_table";
+		$drop_setting_table_sql = "DROP TABLE IF EXISTS $setting_table";
+
+		$wpdb->query( $drop_look_up_table_sql );
+		$wpdb->query( $drop_setting_table_sql );
 	}
-
 }
