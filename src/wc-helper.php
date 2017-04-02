@@ -36,10 +36,10 @@ class wc_helper {
 		// make sure all the columns are swap based on what user wants in the preview
 		for ( $i = 0; $i < count($c->cols_default); $i++ ) {
 			if ( $c->cols_default[$i]['name'] != $_COOKIE[ 'wc_field_' . $i ] && ! in_array( $c->cols_default[$i]['name'], $unvisited_field ) && ! in_array( $_COOKIE[ 'wc_field_' . $i ], $unvisited_field ) ) {
-				$old_value = $new_product_post[$c->wc_field_name[$c->cols_default[$i]['name']]];
-				$new_value = $new_product_post[$c->wc_field_name[$_COOKIE[ 'wc_field_' . $i ]]];
-				$new_product_post[$c->wc_field_name[$c->cols_default[$i]['name']]] = $new_value;
-				$new_product_post[$c->wc_field_name[$_COOKIE[ 'wc_field_' . $i ]]] = $old_value;
+				$old_value = $new_product_post[$c->get_wc_field_name_by_name($c->cols_default[$i]['name'])];
+				$new_value = $new_product_post[$c->get_wc_field_name_by_name($_COOKIE[ 'wc_field_' . $i ])];
+				$new_product_post[$c->get_wc_field_name_by_name($c->cols_default[$i]['name'])] = $new_value;
+				$new_product_post[$c->get_wc_field_name_by_name($_COOKIE[ 'wc_field_' . $i ])] = $old_value;
 				array_push( $unvisited_field, $c->cols_default[$i]['name'], $_COOKIE[ 'wc_field_' . $i ] );
 			}
 		}

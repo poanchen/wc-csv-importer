@@ -13,7 +13,6 @@
 class col {
 
 	public $cols_default;
-	public $wc_field_name;
 	public $line_number_for_cols;
 
 	/**
@@ -22,37 +21,75 @@ class col {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-		$this->wc_field_name = array(
-			'圖型'    => 'thumb_url',
-			'編號'    => '_sku',
-			'產品名稱' => 'post_title',
-			'尺寸'    => 'product_size',
-			'材質'    => 'product_texture',
-			'價格'    => 'product_regular_price'
-		);
+		$this->cols_default = $this->get_cols_default();
+		$this->line_number_for_cols = $this->get_column_header_line_number();
+	}
 
-		$this->cols_default = array(
-			0 => array(
-				'name' => '圖型',
-				'wc_field_name' => $this->wc_field_name['圖型']),
-			1 => array(
-				'name' => '編號',
-				'wc_field_name' => $this->wc_field_name['編號']),
-			2 => array(
-				'name' => '產品名稱',
-				'wc_field_name' => $this->wc_field_name['產品名稱']),
-			3 => array(
-				'name' => '尺寸',
-				'wc_field_name' => $this->wc_field_name['尺寸']),
-			4 => array(
-				'name' => '材質',
-				'wc_field_name' => $this->wc_field_name['材質']),
-			5 => array(
-				'name' => '價格',
-				'wc_field_name' => $this->wc_field_name['價格'])
-		);
+	/**
+	 *
+	 * Get the default column header line number in database
+	 *
+	 * @return int $column_header_line_number
+	 *
+	*/
+	function get_column_header_line_number() {
+		global $wpdb;
 
-		$this->line_number_for_cols = 2;
+		$setting_table = $wpdb->prefix . 'wc_csv_importer_header_setting';
+
+		return intval( $wpdb->get_var( "SELECT column_header_line_number FROM $setting_table WHERE id = 1" ) );
+	}
+
+	/**
+	 *
+	 * Get the default column header field in order in database
+	 *
+	 * @return int $column_header_line_number
+	 *
+	*/
+	function get_column_header_field_in_order() {
+		global $wpdb;
+
+		$setting_table = $wpdb->prefix . 'wc_csv_importer_header_setting';
+
+		return $wpdb->get_var( "SELECT column_header_field_in_order FROM $setting_table WHERE id = 1" );
+	}
+
+	/**
+	 *
+	 * Get the default column header line number in database
+	 *
+	 * @param $name
+	 * @return int $column_header_line_number
+	 *
+	*/
+	function get_wc_field_name_by_name($name) {
+		global $wpdb;
+
+		$look_up_table = $wpdb->prefix . 'wc_csv_importer_header_look_up';
+
+		return $wpdb->get_var( "SELECT value FROM $look_up_table WHERE name = '$name'" );
+	}
+
+	/**
+	 *
+	 * Get the default column header in database
+	 *
+	 * @return int $column_header_line_number
+	 *
+	*/
+	function get_cols_default() {
+		$column_header_field_in_order = str_replace('"', "", $this->get_column_header_field_in_order());
+		$column_header_field_in_order_as_array = split(",", $column_header_field_in_order);
+		$cols_default = array();
+
+		foreach ( $column_header_field_in_order_as_array as $each_field ) {
+			array_push($cols_default, array(
+										'name' => $each_field,
+										'wc_field_name' => $this->get_wc_field_name_by_name($each_field)));
+		}
+
+		return $cols_default;
 	}
 
 	/**
