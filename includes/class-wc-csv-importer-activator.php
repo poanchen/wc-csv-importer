@@ -57,6 +57,9 @@ class wc_csv_importer_Activator {
 		dbDelta( $create_setting_table_sql );
 
 		// insert some default data into the look up table
+		// NOTE: whenever you are adding/removing any element in this array
+		// please make sure to go to col.php to adjust for the size
+		// in function named is_the_field_customized
 		$wc_field_name = array(
 			'圖型'    => 'thumb_url',
 			'編號'    => '_sku',

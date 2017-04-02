@@ -193,13 +193,22 @@ class wc_helper {
 			unset($new_product_post['product_regular_price']);
 		}
 
-		// $c = new col();
+		$c = new col();
 
-		// foreach ( array_keys( $new_product_post ) as $key ) {
-			// if ( !in_array( $key, array_keys( $c->wc_field_name ) ) ) {
-			// 	var_dump( $key );
-			// }
-		// }
+		foreach ( array_keys( $new_product_post ) as $key ) {
+			if ( $c->is_the_field_name_customized( $key ) ) {
+				array_push( $product_attributes, array (
+						'name' => $key,
+						'value' => $new_product_post[$key],
+						'position' => 1,
+						'is_visible' => 1,
+						'is_variation' => 1,
+						'is_taxonomy' => 0
+					)
+				);
+				unset($new_product_post[$key]);
+			}
+		}
 
 		return $product_attributes;
 	}

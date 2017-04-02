@@ -44,7 +44,7 @@ class col {
 	 *
 	 * Get the default column header field in order in database
 	 *
-	 * @return int $column_header_line_number
+	 * @return string $column_header_field_in_order
 	 *
 	*/
 	function get_column_header_field_in_order() {
@@ -60,7 +60,7 @@ class col {
 	 * Get the default column header line number in database
 	 *
 	 * @param $name
-	 * @return int $column_header_line_number
+	 * @return string $field_name
 	 *
 	*/
 	function get_wc_field_name_by_name($name) {
@@ -75,21 +75,78 @@ class col {
 	 *
 	 * Get the default column header in database
 	 *
-	 * @return int $column_header_line_number
+	 * @return array $cols_default
 	 *
 	*/
 	function get_cols_default() {
-		$column_header_field_in_order = str_replace('"', "", $this->get_column_header_field_in_order());
-		$column_header_field_in_order_as_array = split(",", $column_header_field_in_order);
+		$column_header_field_in_order_as_array = $this->get_cols_default_as_array();
 		$cols_default = array();
 
 		foreach ( $column_header_field_in_order_as_array as $each_field ) {
+			$field_name = $this->get_wc_field_name_by_name($each_field);
+
+			if ( ! $field_name ) {
+				// to-do: maybe double check the status here to be on the safe side
+				$this->insert_customized_column_header( $each_field );
+			}
+
 			array_push($cols_default, array(
 										'name' => $each_field,
 										'wc_field_name' => $this->get_wc_field_name_by_name($each_field)));
 		}
 
 		return $cols_default;
+	}
+
+	/**
+	 *
+	 * Get the default column header in database as array
+	 *
+	 * @return array $column_header_field_in_order_as_array
+	 *
+	*/
+	function get_cols_default_as_array() {
+		$column_header_field_in_order = str_replace('"', "", $this->get_column_header_field_in_order());
+		
+		return split(",", $column_header_field_in_order);
+	}
+
+	/**
+	 *
+	 * Get the default column header in database as array
+	 *
+	 * @param $name
+	 * @return array $column_header_field_in_order_as_array
+	 *
+	*/
+	function is_the_field_name_customized($name) {
+		global $wpdb;
+
+		$look_up_table = $wpdb->prefix . 'wc_csv_importer_header_look_up';
+
+		return intval( $wpdb->get_var( "SELECT id FROM $look_up_table WHERE name = '$name'" ) ) > 6;
+	}
+
+	/**
+	 *
+	 * Insert the customized column header into look up table for future use
+	 *
+	 * @param $customized_column_header
+	 * @return int $status_from_wpdb 1 if success, 0 otherwise
+	 *
+	*/
+	public function insert_customized_column_header($customized_column_header) {
+		global $wpdb;
+
+		$look_up_table = $wpdb->prefix . 'wc_csv_importer_header_look_up';
+
+		return $wpdb->insert(
+			$look_up_table,
+			array(
+				'name' => $customized_column_header,
+				'value' => $customized_column_header
+			)
+		);
 	}
 
 	/**
