@@ -81,7 +81,7 @@ class wc_csv_importer_Activator {
 			$setting_table,
 			array(
 				'column_header_line_number'  => 2,
-				'column_header_field_in_order' => '{"圖型","編號","產品名稱","尺寸","材質","價格"}'
+				'column_header_field_in_order' => '"圖型,編號,產品名稱,尺寸,材質,價格"'
 			)
 		);
 	}

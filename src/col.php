@@ -54,6 +54,46 @@ class col {
 
 		$this->line_number_for_cols = 2;
 	}
+
+	/**
+	 *
+	 * Save the default column header line number into database
+	 *
+	 * @param $column_header_line_number
+	 * @return int $status_from_wpdb 1 if success, 0 otherwise
+	 *
+	*/
+	public function save_column_header_line_number($column_header_line_number) {
+		global $wpdb;
+
+		$setting_table = $wpdb->prefix . 'wc_csv_importer_header_setting';
+
+		return $wpdb->update(
+			$setting_table,
+			array( 'column_header_line_number' => $column_header_line_number ),
+			array( 'id' => 1 )
+		);
+	}
+
+	/**
+	 *
+	 * Save the default column header field order into database
+	 *
+	 * @param $column_header_field_in_order
+	 * @return int $status_from_wpdb 1 if success, 0 otherwise
+	 *
+	*/
+	public function save_column_header_field_in_order($column_header_field_in_order) {
+		global $wpdb;
+
+		$setting_table = $wpdb->prefix . 'wc_csv_importer_header_setting';
+
+		return $wpdb->update(
+			$setting_table,
+			array( 'column_header_field_in_order' => '"' . $column_header_field_in_order . '"' ),
+			array( 'id' => 1 )
+		);
+	}
 }
 
 ?>

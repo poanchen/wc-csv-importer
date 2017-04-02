@@ -114,7 +114,27 @@ class wc_csv_importer_Admin {
 	}
 
 	public function setting() {
-		include dirname( __FILE__ ) . '/partials/wc-csv-importer-admin-setting.php';
+		if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST["save"] ) ) {
+			$c = new col();
+			$updata_status = true;
+
+			if ( $c->save_column_header_line_number( $_POST["column_header_line_number"] ) === false ) {
+				$updata_status = false;
+			}
+		
+			if ( $c->save_column_header_field_in_order( trim( $_POST["column_header_field_in_order"] ) ) === false ) {
+				$updata_status = false;
+			}
+
+			if ( $updata_status ) {
+				echo 'Success!';
+			} else {
+				echo 'Fail...';
+			}
+		} else {
+			// simply show the setting file
+			include dirname( __FILE__ ) . '/partials/wc-csv-importer-admin-setting.php';
+		}
 	}
 
 	/**
