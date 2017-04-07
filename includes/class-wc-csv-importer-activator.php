@@ -62,11 +62,12 @@ class wc_csv_importer_Activator {
 		// in function named is_the_field_customized
 		$wc_field_name = array(
 			'圖型'    => 'thumb_url',
-			'編號'    => '_sku',
+			'貨號'    => '_sku',
 			'產品名稱' => 'post_title',
 			'尺寸'    => 'product_size',
 			'材質'    => 'product_texture',
-			'價格'    => 'product_regular_price'
+			'價格'    => 'product_regular_price',
+			'商品分類' => 'product_cat'
 		);
 
 		foreach ( $wc_field_name as $key => $value ) {
@@ -84,7 +85,7 @@ class wc_csv_importer_Activator {
 			$setting_table,
 			array(
 				'column_header_line_number'  => 2,
-				'column_header_field_in_order' => '"圖型,編號,產品名稱,尺寸,材質,價格"'
+				'column_header_field_in_order' => '"圖型,貨號,產品名稱,尺寸,材質,價格,商品分類"'
 			)
 		);
 	}

@@ -71,6 +71,12 @@ class wc_helper {
 		$thumb_id = $this->get_thumbnail_id( $thumb_url, $new_product_id, $new_product_post['post_title'] );
 		set_post_thumbnail( $new_product_id, $thumb_id );
 
+		if ( $new_product_post['product_cat'] != null ) {
+			if ( null != ( $term = get_term_by( 'name', $new_product_post['product_cat'], 'product_cat' ) ) ) {
+				wp_set_object_terms( $new_product_id, $term->term_id, 'product_cat');
+			}
+		}
+
 		return $new_product_id;
 	}
 

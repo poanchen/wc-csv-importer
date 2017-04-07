@@ -124,7 +124,7 @@ class col {
 
 		$look_up_table = $wpdb->prefix . 'wc_csv_importer_header_look_up';
 
-		return intval( $wpdb->get_var( "SELECT id FROM $look_up_table WHERE name = '$name'" ) ) > 6;
+		return intval( $wpdb->get_var( "SELECT id FROM $look_up_table WHERE name = '$name'" ) ) > 7;
 	}
 
 	/**

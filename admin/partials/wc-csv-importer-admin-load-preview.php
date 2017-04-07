@@ -56,7 +56,7 @@ $_SESSION["listOfProducts"] = $listOfProducts;
 	<table>
 		<tr>
 			<?php
-				for ( $i = 0; $i < $_SESSION["numberOfCols"]; $i++ ) {
+				for ( $i = 0; $i < count( $c->get_cols_default_as_array() ); $i++ ) {
 			?>
 					<th>
 						<select id="<?php echo 'wc_field_' . $i; ?>">
@@ -82,7 +82,7 @@ $_SESSION["listOfProducts"] = $listOfProducts;
 		?>
 				<tr>
 				<?php
-					for ( $j = 0; $j < $_SESSION["numberOfCols"]; $j++ ) {
+					for ( $j = 0; $j < count( $c->get_cols_default_as_array() ); $j++ ) {
 						$wc_field_name = $c->cols_default[$j]['wc_field_name'];
 				?>
 						<th><?php echo $listOfProducts[$i][$wc_field_name]; ?></th>
