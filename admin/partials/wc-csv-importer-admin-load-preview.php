@@ -13,7 +13,6 @@
  */
 
 $c = new col();
-$_SESSION["numberOfCols"] = 0;
 $listOfProducts = array();
 $fileData = fopen( $_SESSION["file"], 'r' );
 
@@ -22,10 +21,6 @@ for ( $i = 0; !feof( $fileData ); $i++ ) {
 
 	if ( $i < $c->line_number_for_cols ) {
 		continue;
-	}
-
-	if ( count($eachProduct) > $_SESSION["numberOfCols"] ) {
-		$_SESSION["numberOfCols"] = count($eachProduct);
 	}
 
 	$new_product_post = array();
@@ -97,7 +92,7 @@ $_SESSION["listOfProducts"] = $listOfProducts;
 </div>
 
 <script type="text/javascript">
-	// thanks to https://www.w3schools.com/js/js_cookies.asp
+	// https://www.w3schools.com/js/js_cookies.asp
 	function setCookie(cname, cvalue, exdays) {
 		var d = new Date();
 
@@ -108,7 +103,7 @@ $_SESSION["listOfProducts"] = $listOfProducts;
 		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 	}
 
-	// thanks to https://www.w3schools.com/js/js_cookies.asp
+	// https://www.w3schools.com/js/js_cookies.asp
 	function getCookie(cname) {
 		var name = cname + "=";
 		var decodedCookie = decodeURIComponent( document.cookie );
@@ -129,7 +124,7 @@ $_SESSION["listOfProducts"] = $listOfProducts;
 	}
 
 	function swapTheOptionsIfNeeded(currentOptionId, currentOptionName) {
-		for ( var i = 0; i < <?php echo $_SESSION["numberOfCols"]; ?>; i++ ) {
+		for ( var i = 0; i < <?php echo count( $c->get_cols_default_as_array() ); ?>; i++ ) {
 			if ( i == currentOptionId ) {
 				continue;
 			}
@@ -156,7 +151,7 @@ $_SESSION["listOfProducts"] = $listOfProducts;
 		return document.getElementsByTagName("option")[index].value;
 	}
 
-	for ( var i = 0; i < <?php echo $_SESSION["numberOfCols"]; ?>; i++ ) {
+	for ( var i = 0; i < <?php echo count( $c->get_cols_default_as_array() ); ?>; i++ ) {
 		setCookie( "wc_field_" + i, getOptionNameByIndex( document.getElementById( "wc_field_" + i ).selectedIndex) );
 		document.getElementById( "wc_field_" + i ).addEventListener( "click", wcFieldHasBeenClick );
 	}
