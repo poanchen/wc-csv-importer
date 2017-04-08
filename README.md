@@ -1,4 +1,4 @@
-# wc-csv-importer
+# wc-csv-importer v1.0.11
 A WordPress plugin that allow user to add multiple products in WooCommerce with CSV file.
 
 ## Technologies Used
