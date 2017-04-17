@@ -7,6 +7,7 @@ v1.0.10 (2017-04-06)
 ======
 
 * Instead of determining the number of columns in the preview table from the CSV file. Number of columns will be determined from the setting.
+* User is now able to set the product's category. (For sure, the name of the category should be set beforehand and the name should be unique as well.)
 
 v1.0.9 (2017-04-02)
 ======
