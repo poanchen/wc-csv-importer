@@ -29,10 +29,13 @@ for ( $i = 0; !feof( $fileData ); $i++ ) {
 		$new_product_post[$c->cols_default[$j]['wc_field_name']] = $eachProduct[$j];
 	}
 
-	$new_product_post['post_type'] = 'product';
-	$new_product_post['post_status'] = 'publish';
+	// probably not the best way to do this (however, we should never add a product as it is an empty line)
+	if ( count( $new_product_post ) > 1 ) {
+		$new_product_post['post_type'] = 'product';
+		$new_product_post['post_status'] = 'publish';
 
-	array_push( $listOfProducts, $new_product_post );
+		array_push( $listOfProducts, $new_product_post );
+	}
 }
 
 fclose( $fileData );

@@ -47,7 +47,7 @@ class wc_helper {
 		$product_attributes = $this->process_product_attribute( $new_product_post );
 
 		$thumb_url = $new_product_post['thumb_url'];
-		unset($new_product_post['thumb_url']);
+		unset( $new_product_post['thumb_url'] );
 
 		if ( null == ( $new_product_id = $this->get_product_id_by_sku( $new_product_post['_sku'] ) ) ) {
 			// it is a new product, let's do a create
@@ -58,8 +58,8 @@ class wc_helper {
 			wp_update_post( $new_product_post );
 		}
 
-		update_post_meta( $new_product_id, '_product_attributes', $product_attributes);
-		update_post_meta( $new_product_id, '_sku', $new_product_post['_sku']);
+		update_post_meta( $new_product_id, '_product_attributes', $product_attributes );
+		update_post_meta( $new_product_id, '_sku', $new_product_post['_sku'] );
 
 		$regular_price = $this->calculate_regular_price( $product_attributes );
 
@@ -94,7 +94,7 @@ class wc_helper {
 	public function get_thumbnail_id( $thumb_url, $new_product_id, $product_title ) {
 		$tmp = download_url( $thumb_url );
 		preg_match('/[^\?]+\.(jpg|JPG|jpe|JPE|jpeg|JPEG|gif|GIF|png|PNG)/', $thumb_url, $matches);
-		$file_array['name'] = basename($matches[0]);
+		$file_array['name'] = basename( $matches[0] );
 		$file_array['tmp_name'] = $tmp;
 
 		if ( null == ( $thumb_id = $this->file_exists( $file_array['name'] ) ) ) {
@@ -168,7 +168,7 @@ class wc_helper {
 					'is_taxonomy' => 0
 				)
 			);
-			unset($new_product_post['product_size']);
+			unset( $new_product_post['product_size'] );
 		}
 
 		// 材質
@@ -182,7 +182,7 @@ class wc_helper {
 					'is_taxonomy' => 0
 				)
 			);
-			unset($new_product_post['product_texture']);
+			unset( $new_product_post['product_texture'] );
 		}
 
 		// 價格
@@ -196,7 +196,7 @@ class wc_helper {
 					'is_taxonomy' => 0
 				)
 			);
-			unset($new_product_post['product_regular_price']);
+			unset( $new_product_post['product_regular_price'] );
 		}
 
 		$c = new col();
@@ -212,7 +212,7 @@ class wc_helper {
 						'is_taxonomy' => 0
 					)
 				);
-				unset($new_product_post[$key]);
+				unset( $new_product_post[$key] );
 			}
 		}
 
