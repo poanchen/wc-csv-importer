@@ -15,5 +15,10 @@ After they loaded their CSV file, they may preview their CSV file beforehand. Du
 ![Loading the first image](demo3.PNG)
 Once they feel like they are done with the preview. They may simply click the Create button. Once it is completed. They may head over to WooCommerce to see all their newly created products from the CSV file.
 
+## Next steps/ideas
+* Ability to view the history of loaded CSV files.
+* Ability to enable stacktrace to allow advance user to troubleshoot the problem (the create button should fail if things went wrong).
+* Added support for multiple languages.
+
 ## Disclaimer
 Many of the code was derived and inspired from [WordPress Plugin Boilerplate](https://github.com/DevinVinson/WordPress-Plugin-Boilerplate) by [DevinVinson](https://github.com/DevinVinson).
